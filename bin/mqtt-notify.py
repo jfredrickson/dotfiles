@@ -16,8 +16,10 @@ import datetime
 import dbus
 import paho.mqtt.client as paho
 import socket
+import os
 
-app_name = mqtt_client_name = 'mqtt-notify'
+app_name = 'mqtt-notify'
+mqtt_client_name = app_name + '-' + socket.gethostname() + '-' + str(os.getpid())
 broker = '127.0.0.1'
 port = 1883
 topic = 'irssi'
@@ -40,7 +42,7 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_disconnect(client, userdata, rc):
-    print '%s Disconnected from %s:%s' % (timestamp(), broker, port)
+    print '%s Disconnected from %s:%s as %s' % (timestamp(), broker, port, mqtt_client_name)
 
 
 def on_message(client, userdata, msg):
